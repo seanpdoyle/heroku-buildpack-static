@@ -29,6 +29,19 @@ cp -a $bp_dir/scripts/{boot,config} -t $build_dir/bin/
 echo "-----> Installed ${nginx_version} to /app/bin"
 
 mkdir -p $build_dir/config
+
+custom_nginx_conf_template="$build_dir/config/nginx.conf.erb"
+
+echo "-----> Detecting custom NGINX configuration..."
+
+if [ -f "$custom_nginx_conf_template" ]; then
+  nginx_conf_template="$build_dir/bin/config/templates/nginx.conf.erb"
+
+  echo "-----> Custom NGINX configuration detected in ${custom_nginx_conf_template}!"
+
+  cp $custom_nginx_conf_template $nginx_conf_template
+fi
+
 cp $bp_dir/scripts/config/templates/mime.types $build_dir/config
 
 mkdir -p $build_dir/logs
